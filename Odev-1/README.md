@@ -10,9 +10,3 @@ Oluşturulan şifrenin gösterimi:
 
 Hatalı giriş yapınca gösterilen hata ekranı:
 <img src="https://github.com/ozlemkalemci/UpSchool_PasswordGenerator/blob/main/GeneratorImg/3.jpeg" width="auto">
-
-
-
-
-License
-MIT
