@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\UpSchool.Wasm.props" />
+</Project>
