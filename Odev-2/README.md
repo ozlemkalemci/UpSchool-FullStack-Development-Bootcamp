@@ -1,4 +1,4 @@
-# UpSchool_PasswordGenerator_WebAssembly_UndoButton
+# Undo ve Redo Butonları
 
 Bu çalışmada UpSchool eğitimi kapsamında yaptığım undo butonu ödevi bulunmaktadır. 
 Undo butonu; oluşturulmuş olan ilk şifreye kadar her basıldığında bir önceki şifreyi veren butondur. İlk şifreye gelinmesi halinde undo butonumuz pasif duruma gelmektedir. Buna ek olarak redo butonu da eklenmiştir. 
