@@ -13,6 +13,7 @@ namespace Infrastructure.Persistence.Contexts
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
         {
