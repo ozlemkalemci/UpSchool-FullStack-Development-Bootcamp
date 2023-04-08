@@ -19,10 +19,7 @@ namespace Infrastructure.Persistence.Contexts
         {
             
         }
-        public Task<Address> GetByIdAsync(string ıd, bool v)
-        {
-            throw new NotImplementedException();
-        }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
