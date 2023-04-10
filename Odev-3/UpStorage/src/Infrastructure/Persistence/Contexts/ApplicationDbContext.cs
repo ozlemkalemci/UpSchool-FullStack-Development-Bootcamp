@@ -28,14 +28,14 @@ namespace Infrastructure.Persistence.Contexts
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
        
 
-            //// Ignores
-            //modelBuilder.Ignore<User>();
-            //modelBuilder.Ignore<Role>();
-            //modelBuilder.Ignore<UserRole>();
-            //modelBuilder.Ignore<RoleClaim>();
-            //modelBuilder.Ignore<UserToken>();
-            //modelBuilder.Ignore<UserClaim>();
-            //modelBuilder.Ignore<UserLogin>();
+            // Ignores
+            modelBuilder.Ignore<User>();
+            modelBuilder.Ignore<Role>();
+            modelBuilder.Ignore<UserRole>();
+            modelBuilder.Ignore<RoleClaim>();
+            modelBuilder.Ignore<UserToken>();
+            modelBuilder.Ignore<UserClaim>();
+            modelBuilder.Ignore<UserLogin>();
 
             base.OnModelCreating(modelBuilder);
         }
