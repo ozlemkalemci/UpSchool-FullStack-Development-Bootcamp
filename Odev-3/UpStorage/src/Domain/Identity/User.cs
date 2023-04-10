@@ -8,13 +8,14 @@ namespace Domain.Identity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
         public DateTimeOffset CreatedOn { get; set; }
         public string? CreatedByUserId { get; set; }
 
         public DateTimeOffset? ModifiedOn { get; set; }
         public string? ModifiedByUserId { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
+        public ICollection<Address> Addresses { get; set; }
 
     }
 }

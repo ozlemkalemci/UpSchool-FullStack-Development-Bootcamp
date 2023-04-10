@@ -66,10 +66,12 @@ namespace Infrastructure.Persistence.Configurations.Application
             builder.Property(x => x.IsDeleted).HasDefaultValueSql("0");
 
             //// Relationships
+            //builder.HasOne<User>().WithMany()
+            //    .HasForeignKey(x => x.UserId);
 
-            builder.HasOne<User>(x => x.User)
-                .WithMany(x => x.Addresses)
-                .HasForeignKey(x => x.UserId).IsRequired();
+            //builder.HasOne<User>(x => x.Users)
+            //    .WithMany(x => x.Address)
+            //    .HasForeignKey(x => x.UserId);
 
             builder.ToTable("Addresses");
 

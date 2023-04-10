@@ -23,5 +23,6 @@ namespace Domain.Entities
 
         public AddressType AddressType { get; set; }
 
+
     }
 }

@@ -13,11 +13,13 @@ namespace Infrastructure.Persistence.Contexts
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
         {
             
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,14 +28,14 @@ namespace Infrastructure.Persistence.Contexts
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
        
 
-            // Ignores
-            modelBuilder.Ignore<User>();
-            modelBuilder.Ignore<Role>();
-            modelBuilder.Ignore<UserRole>();
-            modelBuilder.Ignore<RoleClaim>();
-            modelBuilder.Ignore<UserToken>();
-            modelBuilder.Ignore<UserClaim>();
-            modelBuilder.Ignore<UserLogin>();
+            //// Ignores
+            //modelBuilder.Ignore<User>();
+            //modelBuilder.Ignore<Role>();
+            //modelBuilder.Ignore<UserRole>();
+            //modelBuilder.Ignore<RoleClaim>();
+            //modelBuilder.Ignore<UserToken>();
+            //modelBuilder.Ignore<UserClaim>();
+            //modelBuilder.Ignore<UserLogin>();
 
             base.OnModelCreating(modelBuilder);
         }
