@@ -14,7 +14,7 @@ namespace Domain.Identity
         public DateTimeOffset? ModifiedOn { get; set; }
         public string? ModifiedByUserId { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
+        public ICollection<Address> Addresses { get; set; }
 
     }
 }
