@@ -6,9 +6,7 @@ ________________________________
 
 -User.cs:  ICollection Address için kod satırı eklendi
 
--Address.cs: User User içeren kod satırı eklendi
-
--UserConfiguration: Address-User ilişkisi için gerekli kod satırları eklendi. (bire-çok/one-to-many)
+-AddressConfiguration: Address-User ilişkisi için gerekli kod satırları eklendi. (bire-çok/one-to-many)
 
 
 ________________________________
