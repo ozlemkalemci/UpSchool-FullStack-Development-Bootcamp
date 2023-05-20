@@ -1,0 +1,269 @@
+﻿@page "/"
+@using UpSchool.Domain.Services
+@using UpSchool.Domain.Entities
+@using UpSchool.Domain.Dtos
+@using UpSchool.Domain.Utilities
+@using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.Extensions.Localization
+@using System.Net.Http.Headers
+@inject IJSRuntime JsRuntime
+@inject IToasterService ToastService
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject IUrlHelperService UrlHelperService
+@inject IToastService ToasterService
+@implements IAsyncDisposable
+@inject IStringLocalizer<object> Localizer
+
+<div class="container">
+    <div class="row ">
+        <div class="col-md-12">
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="container-fluid">
+                    <h1 class="display-5 fw-bold text-center">My Accounts @Localizer["MyAccounts"] Benim Hesaplarım</h1>
+                    <hr />
+                    <div class="d-flex flex-row">
+                        <button class="btn btn-success" @onclick="@(() => NavigationManager.NavigateTo($"/accounts/add/{hubConnection.ConnectionId}"))">Add</button>
+                        <input type="text" @oninput=@SearchInputChange class="form-control w-25 ms-2" placeholder="Search" />
+                        <select class="form-control w-25 ms-2" @onchange=@OnSelectChange>
+                            <option value="true">Ascending</option>
+                            <option value="false">Descending</option>
+                        </select>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        @foreach (var account in accounts)
+                        {
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title text-center text-primary">@account.Title</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group text-center">
+                                            <input type="text" class="form-control text-center" value="@account.UserName">
+                                            <span class="input-group-text oi oi-document clickable" id="basic-addon1" @onclick="@(() => CopyUserNameToClipBoardAsync(account.UserName))"></span>
+                                        </div>
+                                        <div class="input-group text-center mt-2">
+                                            @if (account.ShowPassword)
+                                            {
+                                                <input type="text" class="form-control text-center" value="@account.Password">
+                                            }
+                                            else
+                                            {
+                                                <input type="password" class="form-control text-center" value="@account.Password">
+                                            }
+                                            <span class="input-group-text oi oi-eye clickable" @onclick="@(() => SetShowPassword(account))"></span>
+                                            <span class="input-group-text oi oi-document clickable" @onclick="@(() => CopyToClipboardAsync(account.ShowPassword,account.Password))"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-info" @onclick="@(() => GoToEditPage(account.Id))">Edit</button>
+                                            <button class="btn btn-danger" @onclick="@(() => DeleteAccountAsync(account.Id))">Delete</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code
+{
+    private HubConnection? hubConnection;
+
+    List<AccountDto> accounts = new();
+
+    private string searchKeyword = string.Empty;
+
+    private bool isAscending = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl($"{UrlHelperService.SignalRUrl}/AccountsHub")
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<AccountDto>(SignalRMethodKeys.Accounts.Added, (accountDto) =>
+        {
+            accounts.Add(accountDto);
+
+            accounts = isAscending ?
+                accounts.OrderBy(x => x.Title).ToList()
+                : accounts.OrderByDescending(x => x.Title).ToList();
+
+            ToasterService.ShowSuccess($"The account titled \"{accountDto.Title}\" was successfully added.");
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.On<Guid>(SignalRMethodKeys.Accounts.Deleted, (accountId) =>
+        {
+            var account = accounts.FirstOrDefault(x => x.Id == accountId);
+
+            accounts.Remove(account);
+
+            ToastService.ShowSuccess("The selected account was successfully deleted.");
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+
+        //accounts = await FetchAccountsAsync();
+
+        await base.OnInitializedAsync();
+    }
+
+    private ValueTask CopyToClipboardAsync(bool showPassword, string password)
+    {
+        ToastService.ShowSuccess("The selected password was copied to the clipboard.");
+
+        if (!showPassword)
+            password = StringHelper.Base64Decode(password);
+
+        return JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", password);
+    }
+
+    private ValueTask CopyUserNameToClipBoardAsync(string userName)
+    {
+        ToastService.ShowSuccess("The selected UserName was copied to the clipboard.");
+
+        return JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", userName);
+    }
+
+    private async Task OnSelectChange(ChangeEventArgs args)
+    {
+        if (args is null) return;
+
+        isAscending = Convert.ToBoolean(args.Value);
+
+        accounts = await FetchAccountsAsync();
+    }
+
+    private async Task SearchInputChange(ChangeEventArgs args)
+    {
+        if (args is not null && !string.IsNullOrEmpty(args.Value.ToString()))
+        {
+            searchKeyword = args.Value.ToString();
+
+            await OnSearchAsync();
+        }
+        else
+        {
+            searchKeyword = string.Empty;
+
+            accounts = await FetchAccountsAsync();
+        }
+
+
+    }
+
+    private Task<List<AccountDto>?> FetchAccountsAsync()
+    {
+        HttpClient.DefaultRequestHeaders.Add("Accept-Language","tr-TR");
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "token");
+
+        return HttpClient.GetFromJsonAsync<List<AccountDto>>($"Accounts?isAscending={isAscending}");
+    }
+
+    private void GoToEditPage(Guid id)
+    {
+        NavigationManager.NavigateTo($"/accounts/edit/{id}");
+    }
+
+    private async Task OnSearchAsync()
+    {
+        Console.WriteLine("OnSearchAsync");
+
+        if (string.IsNullOrEmpty(searchKeyword))
+        {
+            return;
+        }
+
+        var searchedAccounts = await HttpClient.GetFromJsonAsync<List<AccountDto>>($"Accounts?searchKeyword={searchKeyword}&isAscending={isAscending}");
+
+        accounts = searchedAccounts;
+    }
+
+    private void SetShowPassword(AccountDto accountDto)
+    {
+        accountDto.ShowPassword = !accountDto.ShowPassword;
+
+        if (accountDto.ShowPassword)
+        {
+            accountDto.Password = StringHelper.Base64Decode(accountDto.Password);
+            Console.WriteLine(accountDto.Password);
+            return;
+        }
+
+        accountDto.Password = StringHelper.Base64Encode(accountDto.Password);
+        Console.WriteLine(accountDto.Password);
+    }
+
+    private async Task DeleteAccountAsync(Guid id)
+    {
+
+        var response = await hubConnection.InvokeAsync<bool>(SignalRMethodKeys.Accounts.DeleteAsync, id);
+
+        if (response)
+        {
+            var account = accounts.FirstOrDefault(x => x.Id == id);
+
+            accounts.Remove(account);
+
+            ToastService.ShowSuccess("The selected account was successfully deleted.");
+
+            return;
+        }
+
+        ToastService.ShowError("An unexpected error occurred.");
+
+        return;
+
+
+        //var response = await HttpClient.DeleteAsync($"Accounts/{id}");
+
+        //if (response.IsSuccessStatusCode)
+        //{
+        //    var account = accounts.FirstOrDefault(x => x.Id == id);
+
+        //    accounts.Remove(account);
+
+        //    ToastService.ShowSuccess("The selected account was successfully deleted.");
+
+        //    return;
+        //}
+
+        //ToastService.ShowError("An unexpected error occurred.");
+
+        //return;
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            return hubConnection.DisposeAsync();
+        }
+
+
+        return ValueTask.CompletedTask;
+    }
+}
+
+<style>
+    body {
+        background: #393E46
+    }
+</style>

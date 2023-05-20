@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "oQnHruxEZsVz2YO9ItrCNeRpMYnrzDVYwJ/L0ejwVQNgwnNrTL6tzHZgOZVSHdTgE2RuJpueyqcVJJmA1X7mgA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\lonovo\\Desktop\\upschool\\alperhoca\\UpSchool-TheBasics-master\\TheBasics\\src\\UpSchool.Domain\\UpSchool.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lonovo\\.nuget\\packages\\sqlite-net-pcl\\1.8.116\\sqlite-net-pcl.1.8.116.nupkg.sha512",
+    "C:\\Users\\lonovo\\.nuget\\packages\\sqlitepclraw.bundle_green\\2.0.4\\sqlitepclraw.bundle_green.2.0.4.nupkg.sha512",
+    "C:\\Users\\lonovo\\.nuget\\packages\\sqlitepclraw.core\\2.0.4\\sqlitepclraw.core.2.0.4.nupkg.sha512",
+    "C:\\Users\\lonovo\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.4\\sqlitepclraw.lib.e_sqlite3.2.0.4.nupkg.sha512",
+    "C:\\Users\\lonovo\\.nuget\\packages\\sqlitepclraw.provider.dynamic_cdecl\\2.0.4\\sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512",
+    "C:\\Users\\lonovo\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
+  "logs": []
+}

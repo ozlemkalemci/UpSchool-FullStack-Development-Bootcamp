@@ -1,0 +1,65 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = UpSchool.Wasm
+build_property.RootNamespace = UpSchool.Wasm
+build_property.ProjectDir = C:\Users\lonovo\Desktop\upschool\alperhoca\UpSchool-TheBasics-master\TheBasics\src\UpSchool.Wasm\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\lonovo\Desktop\upschool\alperhoca\UpSchool-TheBasics-master\TheBasics\src\UpSchool.Wasm
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Components/SavedPasswordsCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTYXZlZFBhc3N3b3Jkc0NhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Pages/AccountsAddPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNBZGRQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Pages/AccountsEditPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudHNFZGl0UGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Pages/CrawlerLiveLogs.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3Jhd2xlckxpdmVMb2dzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Pages/PasswordGeneratorPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFzc3dvcmRHZW5lcmF0b3JQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-fwau4nbpzn
+
+[C:/Users/lonovo/Desktop/upschool/alperhoca/UpSchool-TheBasics-master/TheBasics/src/UpSchool.Wasm/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-s3kx6drt1x
