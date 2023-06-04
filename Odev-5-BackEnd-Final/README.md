@@ -18,7 +18,7 @@ https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/9
 
 # About the Project
 
-This project is a crawl application that uses SignalR, Selenium, and Clean Architecture to meet customer requirements. The "Crawler" is located in the application layer and performs the scraping process using Selenium. An interface is used for sending log messages with SignalR. The necessary codes for sending emails has been written.Toaster is used for in-app notifications.When the scraping process is completed, the toaster appears on our Blazor page.
+This project is a crawl application that uses SignalR, Selenium, and Clean Architecture to meet customer requirements. The Crawler is located in the application layer and performs the scraping process using Selenium. An interface is used for sending log messages with SignalR. The necessary codes for sending emails has been written.Toaster is used for in-app notifications.When the scraping process is completed, the toaster appears on our Blazor page.
 <br/>
 <br/>
 <br/>
