@@ -1,0 +1,492 @@
+﻿@page "/productCrawler"
+@using Application.Models.Crawler;
+@using Application.Models.Excel;
+@using Application.Models.Order;
+@using Application.Models.Product;
+@using Application.Utilities;
+@using Domain.Entities;
+@using Domain.Enums;
+@using Domain.Services;
+@using Domain.Utilities;
+@using Microsoft.AspNetCore.SignalR.Client;
+@using System.Net.Http.Json;
+@using Microsoft.AspNetCore.Components;
+@using CrawlProject.Wasm.Components;
+@using CrawlProject.Wasm.Services;
+@using Microsoft.JSInterop;
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient;
+@inject IUrlHelperService UrlHelperService
+@inject IJSRuntime JSRuntime
+@inject IToastService ToastService
+
+<div class="container">
+
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="terminal shadow mt-1 mb-3 bg-light bg-opacity-10 rounded">
+
+                <div class="top">
+
+                    <div class="title" style="color:#fff3cd">Product Crawler</div>
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+                    <label for="requestedAmountInput" style="color:#cdcbc2">Product Count:</label>
+                    <input type="int" @bind="@crawlOrderDto.RequestedAmount" placeholder="Product Count" id="requestedAmountInput" />
+
+                    <label for="crawlTypeSelect" style="color:#cdcbc2">Crawl Type:</label>
+                    <select @bind="@crawlOrderDto.CrawlType" id="crawlTypeSelect">
+                        <option value="@CrawlType.All.ToString()">All</option>
+                        <option value="@CrawlType.OnSale.ToString()">Sale</option>
+                        <option value="@CrawlType.NormalPrice.ToString()">Normal Price</option>
+                    </select>
+
+                    <label for="flexSwitchCheckChecked" style="color:#cdcbc2">Download:</label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" @bind="@crawlOrderDto.IsChecked">
+                    </div>
+
+                </div>
+
+
+
+                <div class="card-footer d-flex justify-content-center">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <button class="btn btn-outline-warning custom-button" @onclick="ShowOrders">Get Tables</button>
+                        <button class="btn btn-outline-warning custom-button" @onclick="@(() => FetchOrdersAsync())">Refresh</button>
+                        <button class="btn btn-outline-warning custom-button" @onclick="@(() => FetchOrdersAsync())">Send Mail</button>
+                        <button class="btn btn-outline-warning custom-button" @onclick="(() => SendPostRequest())">Start Crawl</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ORDERS TABLE -->
+            @if (showOrdersTable)
+            {
+                <div class="col-md-12">
+                    @if (ordersDto == null)
+                    {
+                        <div class="text-center">
+                            <h5>There isn't any order.</h5>
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table border-dark table-hover table-sm shadow mb-5" style="background-color:#484D54">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Order Id</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">CrawlType</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">RequestedAmount</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">TotalFoundAmount</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Created On </span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">  </span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">  </span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var order in ordersDto)
+                                {
+                                    <tr>
+                                        <td><span class="text" style="color:#cdcbc2">@order.Id</span></td>
+                                        <td><span class="text" style="color:#cdcbc2">@order.CrawlType</span></td>
+                                        <td><span class="text" style="color:#cdcbc2">@order.RequestedAmount</span></td>
+                                        <td><span class="text" style="color:#cdcbc2">@order.TotalFoundAmount</span></td>
+                                        <td><span class="text" style="color:#cdcbc2">@order.CreatedOn</span></td>
+                                        <td><span class="btn btn-secondary btn-sm" style="color:#cdcbc2" @onclick="(() => GetProductByOrderIdAsync(order.Id))">Products</span></td>
+                                        <td><span class="btn btn-secondary btn-sm" style="color:#cdcbc2" @onclick="(() => GetEventsByOrderIdAsync(order.Id))">Events</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    }
+                </div>
+            }
+
+            <!-- PRODUCTS TABLE -->
+            @if (showProductTable)
+            {
+                <div class="col-md-12">
+                    @if (ordersDto == null)
+                    {
+                        <div class="text-center">
+                            <h5>There isn't any order.</h5>
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table border-dark table-hover table-sm shadow mb-5" style="background-color:#484D54">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Product Id</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Name</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Price</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Sale Price</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Created On </span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">  </span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">  </span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in ordersDto)
+                                {
+                                    @foreach (var product in order.Products)
+                                    {
+                                        <tr>
+                                            <td><span class="text" style="color:#cdcbc2">@product.Id</span></td>
+                                            <td><span class="text" style="color:#cdcbc2">@product.Name</span></td>
+                                            <td><span class="text" style="color:#cdcbc2">@product.Price</span></td>
+                                            <td><span class="text" style="color:#cdcbc2">@product.SalePrice</span></td>
+                                            <td><span class="text" style="color:#cdcbc2">@product.CreatedOn</span></td>
+                                            <td><span class="btn btn-secondary btn-sm" style="color:#cdcbc2" @onclick="GetOrdersTableAsync">Orders</span></td>
+                                            <td><span class="btn btn-secondary btn-sm" style="color:#cdcbc2" @onclick="(() => GetEventsByOrderIdAsync(order.Id))">Events</span></td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+
+                        </table>
+                    }
+                </div>
+            }
+
+
+            <!-- EVENTS TABLE -->
+            @if (showEventsTable)
+            {
+                <div class="col-md-12">
+                    @if (ordersDto == null)
+                    {
+                        <div class="text-center">
+                            <h5>There isn't any order.</h5>
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table border-dark table-hover table-sm shadow mb-5" style="background-color:#484D54">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Order Id</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Status</span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">Created On </span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">  </span></th>
+                                    <th scope="col" style="background-color:#222831"><span class="text" style="color:#fff3cd">  </span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in ordersDto)
+                                {
+                                    @foreach (var events in order.OrderEvents)
+                                    {
+                                        <tr>
+                                            <td><span class="text" style="color:#cdcbc2">@events.OrderId</span></td>
+                                            <td><span class="text" style="color:#cdcbc2">@events.Status</span></td>
+                                            <td><span class="text" style="color:#cdcbc2">@events.CreatedOn</span></td>
+                                            <td><span class="btn btn-secondary btn-sm" style="color:#cdcbc2" @onclick="GetOrdersTableAsync">Orders</span></td>
+                                            <td><span class="btn btn-secondary btn-sm" style="color:#cdcbc2" @onclick="(() => GetProductByOrderIdAsync(order.Id))">Products</span></td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+
+                        </table>
+                    }
+                </div>
+            }
+
+
+        </div>
+
+        <div class="col-md-5">
+            <div class="terminal space shadow mt-1 mb-3 ">
+                <div class="top">
+                    <div class="btns">
+                        <span class="circle red"></span>
+                        <span class="circle yellow"></span>
+                        <span class="circle green"></span>
+                    </div>
+                    <div class="title" style="color:#fff3cd">Live Logs</div>
+                </div>
+                <pre class="body">
+                    @foreach (var log in logInformation)
+                    {
+                    <p class="line1">@log </p>
+                        
+
+                    }
+    </pre>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+@code
+{
+    private HubConnection? hubConnection;
+    public CrawlOrderDto crawlOrderDto = new CrawlOrderDto();
+    private List<ProductDto> productsDto = new List<ProductDto>();
+    private bool showProductTable = false;
+    private bool showOrdersTable = false;
+    private bool showEventsTable = false;
+    private List<OrderDto> ordersDto = new List<OrderDto>();
+    private List<string> logInformation;
+    public ExcelDto excelDto = new ExcelDto();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        productsDto = new List<ProductDto>();
+        ordersDto = new List<OrderDto>();
+        logInformation = new List<string>();
+
+        await FetchOrdersAsync();
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:7016/Hubs/SeleniumLogHub")
+            .WithAutomaticReconnect()
+            .Build();
+
+
+        hubConnection.On<string>("NewSeleniumLogAdded", (seleniumLogDto) =>
+        {
+            logInformation.Add(seleniumLogDto);
+            Console.WriteLine(seleniumLogDto);
+            InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+
+
+        await base.OnInitializedAsync();
+    }
+
+
+    private async Task FetchOrdersAsync()
+    {
+        ordersDto = await HttpClient.GetFromJsonAsync<List<OrderDto>>("api/ProductCrawler/GetAllOrdersAsync");
+    }
+
+
+
+    private async Task SendPostRequest()
+    {
+
+
+        var response = await HttpClient.PostAsJsonAsync("api/ProductCrawler/PostOrderAsync", crawlOrderDto);
+
+        if (crawlOrderDto.IsChecked)
+        {
+            var fileBytes = await response.Content.ReadAsByteArrayAsync();
+
+            // Excel dosyasını indir
+            await JSRuntime.InvokeVoidAsync("saveAsFile", $"{DateTimeOffset.Now:yyyyMMdd_HHmmss}_products.xlsx", Convert.ToBase64String(fileBytes));
+        }
+
+        ToastService.ShowSuccess("Crawling process has been completed!");
+    }
+
+    private async Task SendMail()
+    {
+        var response = await HttpClient.PostAsJsonAsync("api/ProductCrawler/SendEmail", crawlOrderDto);
+
+    }
+
+    private async Task GetProductByOrderIdAsync(Guid id)
+    {
+        HideEvents();
+        HideOrders();
+        var url = $"api/ProductCrawler/GetTablesByIdAsync?id={id}";
+        var orderDto = await HttpClient.GetFromJsonAsync<OrderDto>(url);
+        ordersDto = new List<OrderDto> { orderDto };
+        ShowProducts();
+    }
+
+    private async Task GetEventsByOrderIdAsync(Guid id)
+    {
+        HideProducts();
+        HideOrders();
+        var url = $"api/ProductCrawler/GetTablesByIdAsync?id={id}";
+        var orderDto = await HttpClient.GetFromJsonAsync<OrderDto>(url);
+        ordersDto = new List<OrderDto> { orderDto };
+        ShowEvents();
+    }
+
+    private async Task GetOrdersTableAsync()
+    {
+        HideEvents();
+        HideProducts();
+        var getOrderDto = await HttpClient.GetFromJsonAsync<List<OrderDto>>("api/ProductCrawler/GetAllOrdersAsync");
+        ordersDto = getOrderDto;
+        ShowOrders();
+    }
+
+
+
+    private void ShowOrders()
+    {
+        showOrdersTable = true;
+        StateHasChanged();
+    }
+    private void ShowProducts()
+    {
+        showProductTable = true;
+        StateHasChanged();
+    }
+    private void ShowEvents()
+    {
+        showEventsTable = true;
+        StateHasChanged();
+    }
+
+    //
+
+    private void HideOrders()
+    {
+        showOrdersTable = false;
+        StateHasChanged();
+    }
+    private void HideProducts()
+    {
+        showProductTable = false;
+        StateHasChanged();
+    }
+    private void HideEvents()
+    {
+        showEventsTable = false;
+        StateHasChanged();
+    }
+}
+
+
+<style>
+    body {
+        background: #2f343c
+    }
+
+    .notification {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .terminal {
+        border-radius: 5px 5px 0 0;
+        position: relative;
+    }
+
+        .terminal .top {
+            background: #222831;
+            color: black;
+            padding: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .terminal .btns {
+            position: absolute;
+            top: 7px;
+            left: 5px;
+        }
+
+        .terminal .circle {
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            border-radius: 15px;
+            margin-left: 2px;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+    .title {
+        text-align: center;
+    }
+
+    .red {
+        background: #EC6A5F;
+        border-color: #D04E42;
+    }
+
+    .green {
+        background: #64CC57;
+        border-color: #4EA73B;
+    }
+
+    .yellow {
+        background: #F5C04F;
+        border-color: #D6A13D;
+    }
+
+    .clear {
+        clear: both;
+    }
+
+    .terminal .body {
+        background: #484D54;
+        color: #cdcbc2;
+        padding: 8px;
+        overflow: auto;
+    }
+
+    .space {
+        margin: 25px;
+    }
+
+    .shadow {
+        box-shadow: 0px 0px 10px rgba(0,0,0,.4)
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    tr:hover {
+        background-color: #fff3cd;
+    }
+
+    th span.text,
+    td span.text {
+        font-size: 12px;
+    }
+
+    .btn span.text {
+        font-size: 12px;
+    }
+
+    .btn.btn-outline-warning,
+    .btn.btn-outline-info {
+        font-size: 12px;
+    }
+
+    .pagination {
+        margin-top: 10px;
+    }
+
+    .custom-button {
+        color: #cdcbc2;
+        border-color: #cdcbc2
+    }
+</style>
