@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\CrawlProject.Wasm.props" />
-</Project>
