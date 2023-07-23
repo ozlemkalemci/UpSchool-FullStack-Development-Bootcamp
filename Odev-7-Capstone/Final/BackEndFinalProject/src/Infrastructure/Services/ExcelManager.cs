@@ -12,25 +12,29 @@ namespace Infrastructure.Services
             {
                 var worksheet = workbook.Worksheets.Add("Products");
 
-                // Sütun başlıklarını ayarla
-                worksheet.Cell(1, 1).Value = "Name";
-                worksheet.Cell(1, 2).Value = "Price";
-                worksheet.Cell(1, 3).Value = "Sale Price";
-                worksheet.Cell(1, 4).Value = "Picture";
-                worksheet.Cell(1, 5).Value = "Is On Sale";
-                worksheet.Cell(1, 6).Value = "Created On";
+                var headers = new[] { "Name", "Price", "Sale Price", "Picture", "Is On Sale", "Created On" };
+                var headerRow = worksheet.Row(1);
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    headerRow.Cell(i + 1).Value = headers[i];
 
-                // Verileri doldur
+                    worksheet.Column(i + 1).Width = 15;
+                }
+
                 for (int i = 0; i < products.Count; i++)
                 {
                     var product = products[i];
-                    worksheet.Cell(i + 2, 1).Value = product.Name;
-                    worksheet.Cell(i + 2, 2).Value = product.Price;
-                    worksheet.Cell(i + 2, 3).Value = product.SalePrice;
-                    worksheet.Cell(i + 2, 4).Value = product.Picture;
-                    worksheet.Cell(i + 2, 5).Value = product.IsOnSale;
-                    worksheet.Cell(i + 2, 6).Value = product.CreatedOn.DateTime;
+                    var dataRow = worksheet.Row(i + 2);
+                    dataRow.Cell(1).Value = product.Name;
+                    dataRow.Cell(2).Value = product.Price;
+                    dataRow.Cell(3).Value = product.SalePrice;
+                    dataRow.Cell(4).Value = product.Picture;
+                    dataRow.Cell(5).Value = product.IsOnSale;
+                    dataRow.Cell(6).Value = product.CreatedOn.DateTime;
                 }
+
+                var tableRange = worksheet.Range(worksheet.Cell(1, 1), worksheet.Cell(products.Count + 1, headers.Length));
+                var excelTable = tableRange.CreateTable();
 
                 using (var stream = new MemoryStream())
                 {
