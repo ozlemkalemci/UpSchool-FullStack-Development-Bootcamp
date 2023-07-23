@@ -73,3 +73,15 @@ The user's orders are displayed in a table. The products and events related to t
 https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/325f754d-1463-4855-96bd-fab450a93147
 
 We can download our orders as an Excel file. These tables are well-formatted Excel spreadsheets.
+
+
+# Design
+
+
+https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/62a9d811-54d8-4cb8-aa2e-941097777667
+
+Resource for animated background: https://codepen.io/anjeetsingh2775/pen/LYBjwKP
+
+![crawlpage](https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/3f505593-6fd4-4594-9745-1432490c7a19)
+
+Material UI has been used in the project. However, the Material UI appbar has been made transparent, and a custom shape has been designed to replace it. The asymmetrical triangle shape of the navbar has been created by me. To achieve a seamless match with the sharp triangle structure and gradient color of the animated landing page, the following resource has been utilized: https://www.shapedivider.app/
