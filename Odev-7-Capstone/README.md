@@ -72,3 +72,4 @@ The user's orders are displayed in a table. The products and events related to t
 
 https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/325f754d-1463-4855-96bd-fab450a93147
 
+We can download our orders as an Excel file. These tables are well-formatted Excel spreadsheets.
