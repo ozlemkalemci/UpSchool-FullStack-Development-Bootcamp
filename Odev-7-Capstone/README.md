@@ -79,7 +79,10 @@ We can download our orders as an Excel file. These tables are well-formatted Exc
 # Design
 
 
-https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/62a9d811-54d8-4cb8-aa2e-941097777667
+
+https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/4a9dc62d-c4ea-47e4-b343-e6faa2dfc015
+
+
 
 Resource for animated background: https://codepen.io/anjeetsingh2775/pen/LYBjwKP
 
