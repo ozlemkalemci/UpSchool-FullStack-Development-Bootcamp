@@ -54,7 +54,6 @@ In my application, I use Redux to keep track of information like whether the use
 
 https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/6a79159f-0705-462f-a932-af64a15f9c74
 
-We can download our orders as an Excel file. These tables are well-formatted Excel spreadsheets.
 
 After the scanning process, information about whether a file will be downloaded or an email will be sent is communicated to our crawler page using Redux. Our scanning process continues based on this information. Once the scanning process starts, the user is directed to the live log screen. On this screen, the product crawling process is monitored in real-time. After the process is completed, we keep track of the notification count using Redux. If the process is completed, a badge with the number "1" appears on the avatar in the app bar.
 
