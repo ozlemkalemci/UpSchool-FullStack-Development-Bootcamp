@@ -21,7 +21,7 @@ https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/9
 
 # About the Project
 
-This project is a crawl application that uses SignalR, Selenium, and Clean Architecture to meet customer requirements. The Crawler is located in the application layer and performs the scraping process using Selenium. An interface is used for sending log messages with SignalR. The necessary codes for sending emails has been written.Toaster is used for in-app notifications.When the scraping process is completed, the toaster appears on our Blazor page.
+This project is a crawl application that uses SignalR, Selenium, Clean Architecture, React, Typescript, Material UI, Axios and Redux to meet customer requirements. The Crawler is located in the application layer and performs the scraping process using Selenium. An interface is used for sending log messages with SignalR. The necessary codes for sending emails has been written.
 <br/>
 <br/>
 <br/>
@@ -93,3 +93,20 @@ Resource for animated background: https://codepen.io/anjeetsingh2775/pen/LYBjwKP
 ![crawlpage](https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/3f505593-6fd4-4594-9745-1432490c7a19)
 
 Material UI has been used in the project. However, the Material UI appbar has been made transparent, and a custom shape has been designed to replace it. The asymmetrical triangle shape of the navbar has been created by me. To achieve a seamless match with the sharp triangle structure and gradient color of the animated landing page, the following resource has been utilized: https://www.shapedivider.app/
+
+# SignalR
+
+![Instantly-Update-a-Real-Time-Chart-with-SignalR-in-Blazor-Server-Side-App2-removebg-preview](https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/608501f7-e8b2-4fcb-b6fe-88b5a66c70a6)
+
+SignalR is a Microsoft technology that enables the creation of real-time web applications. It facilitates communication between the client and the server, allowing for fast updates and interactions. SignalR supports the WebSocket protocol and provides a simplified programming model by abstracting away the complexities of WebSocket usage. This makes it easier to add features such as live chat, real-time updates, and notifications to applications.
+<br/>
+<br/>
+<br/>
+
+# Selenium
+![sel-removebg-preview](https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/95a8b59f-e0ae-4f0f-a7d5-8e2b5b1196a4)
+
+Selenium is a popular open-source tool used for automating web application testing and browser automation. It provides a set of APIs and libraries to interact with web browsers. Selenium is compatible with various programming languages and can perform a range of automation tasks such as controlling browsers, simulating user interactions, filling out web forms, and navigating between pages. It offers a powerful tool for developers and testing professionals to test and ensure the reliability of web applications.
+<br/>
+<br/>
+<br/>
