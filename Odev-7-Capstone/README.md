@@ -11,7 +11,11 @@ Capstone Project
   <br/>
 
 
-https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/1fcf77ce-e21f-4952-9fac-efc4bf5d6ee8
+
+
+https://github.com/ozlemkalemci/UpSchool-FullStack-Development-Bootcamp/assets/96883642/fd2bbc21-8d6b-4735-be0f-9c3334639275
+
+
 
 
 
